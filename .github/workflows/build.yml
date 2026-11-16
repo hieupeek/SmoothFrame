@@ -1,0 +1,95 @@
+# SmoothFrame — CI: build the macOS app and package a .dmg
+#
+# Runs on every push to main and every pull request, plus on version tags.
+# - macos-15 runner ships Xcode 16, which matches the project's Swift 6 /
+#   macOS 14 deployment target. No third-party dependencies are needed.
+# - The build is UNSIGNED (CODE_SIGNING_ALLOWED=NO): there is no Apple
+#   Developer certificate in this repo, so no signing or notarization happens
+#   here. The resulting .app/.dmg runs on your own Mac after right-click >
+#   Open (or `xattr -cr SmoothFrame.app`); it is NOT Gatekeeper-clean for
+#   distribution to other people. Adding signing/notarization needs an Apple
+#   Developer account + secrets (see README, "CI/CD & .dmg" section).
+# - On a tag like v1.0.0 the .dmg is attached to a GitHub Release.
+#   Otherwise it is kept as a workflow artifact for 30 days.
+
+name: Build and Release DMG
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show Xcode version
+        run: |
+          xcodebuild -version
+          swift --version
+
+      - name: Run tests
+        run: |
+          xcodebuild test \
+            -project SmoothFrame.xcodeproj \
+            -scheme SmoothFrame \
+            -destination 'platform=macOS' \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Build Release app
+        run: |
+          xcodebuild build \
+            -project SmoothFrame.xcodeproj \
+            -scheme SmoothFrame \
+            -configuration Release \
+            -destination 'platform=macOS' \
+            -derivedDataPath build/DerivedData \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Package .dmg
+        run: |
+          set -euo pipefail
+          APP_PATH="$(find build/DerivedData -name 'SmoothFrame.app' -type d | head -n 1)"
+          if [ -z "$APP_PATH" ]; then
+            echo "SmoothFrame.app not found under build/DerivedData" >&2
+            find build/DerivedData -maxdepth 4 -type d | head -n 50
+            exit 1
+          fi
+          echo "App found at: $APP_PATH"
+          ls -lh "$APP_PATH"
+          mkdir -p build/dist
+          cp -R "$APP_PATH" build/dist/
+          hdiutil create \
+            -volname "SmoothFrame" \
+            -srcfolder build/dist \
+            -ov -format UDZO \
+            build/SmoothFrame.dmg
+          ls -lh build/SmoothFrame.dmg
+
+      - name: Upload .dmg artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SmoothFrame-macOS
+          path: build/SmoothFrame.dmg
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Attach .dmg to Release (tags only)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: build/SmoothFrame.dmg
+          generate_release_notes: true

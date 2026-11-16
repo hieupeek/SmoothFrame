@@ -1,5 +1,7 @@
 # SmoothFrame
 
+[![Build and Release DMG](https://github.com/hieupeek/SmoothFrame/actions/workflows/build.yml/badge.svg)](https://github.com/hieupeek/SmoothFrame/actions/workflows/build.yml)
+
 **Trình phát video macOS với nội suy khung hình thời gian thực — giống SmoothVideo Project (SVP), nhưng là app độc lập, mã nguồn mở, viết bằng Swift.**
 
 > **English summary:** SmoothFrame is a standalone native macOS video player that interpolates video from 24/30 fps to 48–144 fps in real time (motion estimation / motion compensation, MEMC), inspired by SmoothVideo Project. Swift 6 + SwiftUI + Metal + AVFoundation, macOS 14+, Apple Silicon. Open source (MIT). Clean-room implementation — no SVP code.
@@ -85,6 +87,13 @@ open SmoothFrame.xcodeproj
 Trong Xcode: chọn scheme **SmoothFrame**, target **My Mac**, nhấn **⌘R**.
 
 Không cần dependency ngoài: chỉ dùng framework hệ thống (AVFoundation, Metal, MetalKit, CoreML, VideoToolbox, CoreVideo). Không cần CocoaPods/SPM.
+
+## CI/CD & .dmg
+
+Không cần tự build trên máy: mỗi lần push lên `main` hoặc mở pull request, GitHub Actions (`.github/workflows/build.yml`, runner `macos-15` + Xcode 16) sẽ tự chạy test rồi build bản Release và đóng thành file `SmoothFrame.dmg`.
+
+- **Tải .dmg:** vào tab **Actions** → chọn lần chạy mới nhất → mục **Artifacts** → `SmoothFrame-macOS` (giữ 30 ngày). Khi gắn tag `v1.0.0` trở lên, file `.dmg` sẽ đính kèm luôn vào **Releases**.
+- **Chưa ký số / chưa notarize:** bản CI build là unsigned vì repo chưa có chứng chỉ Apple Developer. Trên máy của bạn, mở bằng chuột phải → **Open** (hoặc chạy `xattr -cr SmoothFrame.app`) thì dùng được. Muốn phân phối sạch qua Gatekeeper cho người khác thì cần tài khoản Apple Developer ($99/năm) + thêm secrets `APPLE_ID`, `APPLE_APP_PASSWORD`, `APPLE_TEAM_ID` và bước notarize vào workflow — đó là việc Phase 2, không phải lỗi build.
 
 ## Cách dùng
 
