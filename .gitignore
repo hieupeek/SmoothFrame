@@ -4,6 +4,7 @@
 DerivedData/
 *.xcuserstate
 *.xcscheme
+!*.xcodeproj/xcshareddata/xcschemes/*.xcscheme
 !*.xcodeproj/project.pbxproj
 .swiftpm/
 build/
