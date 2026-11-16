@@ -133,17 +133,17 @@ final class PlaybackEngine: NSObject {
     }
 }
 
-// MARK: - AVPlayerItemVideoOutputDelegate
-extension PlaybackEngine: AVPlayerItemVideoOutputDelegate {
-    func outputSequenceWasFlushed(_ output: AVPlayerItemVideoOutput) {
+// MARK: - AVPlayerItemOutputPullDelegate
+extension PlaybackEngine: AVPlayerItemOutputPullDelegate {
+    func outputSequenceWasFlushed(_ output: AVPlayerItemOutput) {
         ringBuffer.clear()
     }
 
-    func outputMediaDataWillChange(_ output: AVPlayerItemVideoOutput) {
+    func outputMediaDataWillChange(_ output: AVPlayerItemOutput) {
         // A seek / flush is coming; the next frames will re-fill the buffer.
     }
 
-    // Note: AVPlayerItemVideoOutputDelegate has no "didOutput" callback in the
+    // Note: AVPlayerItemOutputPullDelegate has no "didOutput" callback in the
     // public API; frames are pulled via hasNewPixelBuffer(forItemTime:) from the
     // display-link thread. See DisplayLinkRenderer.pullLatestFrame().
     // This delegate conformance exists for flush notifications only.

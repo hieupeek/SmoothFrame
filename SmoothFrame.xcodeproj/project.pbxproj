@@ -229,7 +229,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1A2B3C4D00010016 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -263,7 +262,10 @@
 				1A2B3C4D0001000E /* AppSettings.swift in Sources */,
 				1A2B3C4D0001000F /* PlaybackStats.swift in Sources */,
 				1A2B3C4D00010010 /* VideoInfo.swift in Sources */,
-				1A2B3C4D00010011 /* Motion.metal in Sources */
+				1A2B3C4D00010011 /* Motion.metal in Sources */,
+				1A2B3C4D00010013 /* Upscaler.swift in Sources */,
+				1A2B3C4D00010014 /* MetalUpscaler.swift in Sources */,
+				1A2B3C4D00010015 /* DisplayDetector.swift in Sources */
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
