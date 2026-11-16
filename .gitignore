@@ -1,0 +1,34 @@
+# Xcode
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+DerivedData/
+*.xcuserstate
+*.xcscheme
+!*.xcodeproj/project.pbxproj
+.swiftpm/
+build/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Swift
+*.o
+*.swiftmodule
+*.swiftdoc
+*.swiftsourceinfo
+
+# Models (user-supplied, large, not in repo)
+*.mlmodelc/
+*.mlpackage/
+SmoothFrame/Models/
+
+# Misc
+*.log

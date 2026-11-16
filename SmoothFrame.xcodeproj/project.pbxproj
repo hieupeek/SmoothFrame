@@ -1,0 +1,432 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1A2B3C4D00010001 /* SmoothFrameApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D00020001 /* SmoothFrameApp.swift */; };
+		1A2B3C4D00010002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D00020002 /* ContentView.swift */; };
+		1A2B3C4D00010003 /* PlaybackEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D00020003 /* PlaybackEngine.swift */; };
+		1A2B3C4D00010004 /* FrameRingBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D00020004 /* FrameRingBuffer.swift */; };
+		1A2B3C4D00010005 /* DisplayLinkRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D00020005 /* DisplayLinkRenderer.swift */; };
+		1A2B3C4D00010006 /* FrameInterpolationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D00020006 /* FrameInterpolationEngine.swift */; };
+		1A2B3C4D00010007 /* BlendEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D00020007 /* BlendEngine.swift */; };
+		1A2B3C4D00010008 /* MetalMotionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D00020008 /* MetalMotionEngine.swift */; };
+		1A2B3C4D00010009 /* AppleOpticalFlowEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D00020009 /* AppleOpticalFlowEngine.swift */; };
+		1A2B3C4D0001000A /* RIFEEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D0002000A /* RIFEEngine.swift */; };
+		1A2B3C4D0001000B /* SceneChangeDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D0002000B /* SceneChangeDetector.swift */; };
+		1A2B3C4D0001000C /* EngineRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D0002000C /* EngineRegistry.swift */; };
+		1A2B3C4D0001000D /* OfflineExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D0002000D /* OfflineExporter.swift */; };
+		1A2B3C4D0001000E /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D0002000E /* AppSettings.swift */; };
+		1A2B3C4D0001000F /* PlaybackStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D0002000F /* PlaybackStats.swift */; };
+		1A2B3C4D00010010 /* VideoInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D00020010 /* VideoInfo.swift */; };
+		1A2B3C4D00010011 /* Motion.metal in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D00020011 /* Motion.metal */; };
+		1A2B3C4D00010012 /* SmoothFrameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D00020012 /* SmoothFrameTests.swift */; };
+		1A2B3C4D00010013 /* Upscaler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D00020015 /* Upscaler.swift */; };
+		1A2B3C4D00010014 /* MetalUpscaler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D00020016 /* MetalUpscaler.swift */; };
+		1A2B3C4D00010015 /* DisplayDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D00020017 /* DisplayDetector.swift */; };
+		1A2B3C4D00010016 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D00020018 /* Info.plist */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1A2B3C4D00020001 /* SmoothFrameApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmoothFrameApp.swift; sourceTree = "<group>"; };
+		1A2B3C4D00020002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		1A2B3C4D00020003 /* PlaybackEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player/PlaybackEngine.swift; sourceTree = "<group>"; };
+		1A2B3C4D00020004 /* FrameRingBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player/FrameRingBuffer.swift; sourceTree = "<group>"; };
+		1A2B3C4D00020005 /* DisplayLinkRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player/DisplayLinkRenderer.swift; sourceTree = "<group>"; };
+		1A2B3C4D00020006 /* FrameInterpolationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interpolation/FrameInterpolationEngine.swift; sourceTree = "<group>"; };
+		1A2B3C4D00020007 /* BlendEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interpolation/BlendEngine.swift; sourceTree = "<group>"; };
+		1A2B3C4D00020008 /* MetalMotionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interpolation/MetalMotionEngine.swift; sourceTree = "<group>"; };
+		1A2B3C4D00020009 /* AppleOpticalFlowEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interpolation/AppleOpticalFlowEngine.swift; sourceTree = "<group>"; };
+		1A2B3C4D0002000A /* RIFEEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interpolation/RIFEEngine.swift; sourceTree = "<group>"; };
+		1A2B3C4D0002000B /* SceneChangeDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interpolation/SceneChangeDetector.swift; sourceTree = "<group>"; };
+		1A2B3C4D0002000C /* EngineRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interpolation/EngineRegistry.swift; sourceTree = "<group>"; };
+		1A2B3C4D0002000D /* OfflineExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Export/OfflineExporter.swift; sourceTree = "<group>"; };
+		1A2B3C4D0002000E /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/AppSettings.swift; sourceTree = "<group>"; };
+		1A2B3C4D0002000F /* PlaybackStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/PlaybackStats.swift; sourceTree = "<group>"; };
+		1A2B3C4D00020010 /* VideoInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/VideoInfo.swift; sourceTree = "<group>"; };
+		1A2B3C4D00020011 /* Motion.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Interpolation/Motion.metal; sourceTree = "<group>"; };
+		1A2B3C4D00020012 /* SmoothFrameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmoothFrameTests.swift; sourceTree = "<group>"; };
+		1A2B3C4D00020013 /* SmoothFrame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmoothFrame.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A2B3C4D00020014 /* SmoothFrameTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SmoothFrameTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A2B3C4D00020015 /* Upscaler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Upscaling/Upscaler.swift; sourceTree = "<group>"; };
+		1A2B3C4D00020016 /* MetalUpscaler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Upscaling/MetalUpscaler.swift; sourceTree = "<group>"; };
+		1A2B3C4D00020017 /* DisplayDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Upscaling/DisplayDetector.swift; sourceTree = "<group>"; };
+		1A2B3C4D00020018 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1A2B3C4D00030001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1A2B3C4D00030002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1A2B3C4D00040001 = {
+			isa = PBXGroup;
+			children = (
+				1A2B3C4D00040002 /* SmoothFrame */,
+				1A2B3C4D00040007 /* SmoothFrameTests */,
+				1A2B3C4D00040008 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		1A2B3C4D00040002 /* SmoothFrame */ = {
+			isa = PBXGroup;
+			children = (
+				1A2B3C4D00020001 /* SmoothFrameApp.swift */,
+				1A2B3C4D00020002 /* ContentView.swift */,
+				1A2B3C4D00040003 /* Player */,
+				1A2B3C4D00040004 /* Interpolation */,
+				1A2B3C4D00040005 /* Export */,
+				1A2B3C4D00040006 /* Models */,
+				1A2B3C4D00040009 /* Upscaling */,
+				1A2B3C4D00020018 /* Info.plist */,
+			);
+			path = SmoothFrame;
+			sourceTree = "<group>";
+		};
+		1A2B3C4D00040003 /* Player */ = {
+			isa = PBXGroup;
+			children = ( 1A2B3C4D00020003, 1A2B3C4D00020004, 1A2B3C4D00020005 );
+			path = Player;
+			sourceTree = "<group>";
+		};
+		1A2B3C4D00040004 /* Interpolation */ = {
+			isa = PBXGroup;
+			children = ( 1A2B3C4D00020006, 1A2B3C4D00020007, 1A2B3C4D00020008, 1A2B3C4D00020009, 1A2B3C4D0002000A, 1A2B3C4D0002000B, 1A2B3C4D0002000C, 1A2B3C4D00020011 );
+			path = Interpolation;
+			sourceTree = "<group>";
+		};
+		1A2B3C4D00040005 /* Export */ = {
+			isa = PBXGroup;
+			children = ( 1A2B3C4D0002000D );
+			path = Export;
+			sourceTree = "<group>";
+		};
+		1A2B3C4D00040006 /* Models */ = {
+			isa = PBXGroup;
+			children = ( 1A2B3C4D0002000E, 1A2B3C4D0002000F, 1A2B3C4D00020010 );
+			path = Models;
+			sourceTree = "<group>";
+		};
+		1A2B3C4D00040009 /* Upscaling */ = {
+			isa = PBXGroup;
+			children = (
+				1A2B3C4D00020015 /* Upscaler.swift */,
+				1A2B3C4D00020016 /* MetalUpscaler.swift */,
+				1A2B3C4D00020017 /* DisplayDetector.swift */,
+			);
+			path = Upscaling;
+			sourceTree = "<group>";
+		};
+		1A2B3C4D00040007 /* SmoothFrameTests */ = {
+			isa = PBXGroup;
+			children = ( 1A2B3C4D00020012 /* SmoothFrameTests.swift */ );
+			path = SmoothFrameTests;
+			sourceTree = "<group>";
+		};
+		1A2B3C4D00040008 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1A2B3C4D00020013 /* SmoothFrame.app */,
+				1A2B3C4D00020014 /* SmoothFrameTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1A2B3C4D00050001 /* SmoothFrame */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1A2B3C4D00070001 /* Build configuration list for PBXNativeTarget "SmoothFrame" */;
+			buildPhases = (
+				1A2B3C4D00060001 /* Sources */,
+				1A2B3C4D00030001 /* Frameworks */,
+				1A2B3C4D00060003 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SmoothFrame;
+			productName = SmoothFrame;
+			productReference = 1A2B3C4D00020013 /* SmoothFrame.app */;
+			productType = "com.apple.product-type.application";
+		};
+		1A2B3C4D00050002 /* SmoothFrameTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1A2B3C4D00070002 /* Build configuration list for PBXNativeTarget "SmoothFrameTests" */;
+			buildPhases = (
+				1A2B3C4D00060002 /* Sources */,
+				1A2B3C4D00030002 /* Frameworks */,
+				1A2B3C4D00060004 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1A2B3C4D00050003 /* PBXTargetDependency */,
+			);
+			name = SmoothFrameTests;
+			productName = SmoothFrameTests;
+			productReference = 1A2B3C4D00020014 /* SmoothFrameTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1A2B3C4D00050004 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					1A2B3C4D00050001 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					1A2B3C4D00050002 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = 1A2B3C4D00070003 /* Build configuration list for PBXProject "SmoothFrame" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 1A2B3C4D00040001;
+			productRefGroup = 1A2B3C4D00040008 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1A2B3C4D00050001 /* SmoothFrame */,
+				1A2B3C4D00050002 /* SmoothFrameTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1A2B3C4D00060003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1A2B3C4D00010016 /* Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1A2B3C4D00060004 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1A2B3C4D00060001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1A2B3C4D00010001 /* SmoothFrameApp.swift in Sources */,
+				1A2B3C4D00010002 /* ContentView.swift in Sources */,
+				1A2B3C4D00010003 /* PlaybackEngine.swift in Sources */,
+				1A2B3C4D00010004 /* FrameRingBuffer.swift in Sources */,
+				1A2B3C4D00010005 /* DisplayLinkRenderer.swift in Sources */,
+				1A2B3C4D00010006 /* FrameInterpolationEngine.swift in Sources */,
+				1A2B3C4D00010007 /* BlendEngine.swift in Sources */,
+				1A2B3C4D00010008 /* MetalMotionEngine.swift in Sources */,
+				1A2B3C4D00010009 /* AppleOpticalFlowEngine.swift in Sources */,
+				1A2B3C4D0001000A /* RIFEEngine.swift in Sources */,
+				1A2B3C4D0001000B /* SceneChangeDetector.swift in Sources */,
+				1A2B3C4D0001000C /* EngineRegistry.swift in Sources */,
+				1A2B3C4D0001000D /* OfflineExporter.swift in Sources */,
+				1A2B3C4D0001000E /* AppSettings.swift in Sources */,
+				1A2B3C4D0001000F /* PlaybackStats.swift in Sources */,
+				1A2B3C4D00010010 /* VideoInfo.swift in Sources */,
+				1A2B3C4D00010011 /* Motion.metal in Sources */
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1A2B3C4D00060002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1A2B3C4D00010012 /* SmoothFrameTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		1A2B3C4D00050003 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1A2B3C4D00050001 /* SmoothFrame */;
+			targetProxy = 1A2B3C4D00050005 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXContainerItemProxy section */
+		1A2B3C4D00050005 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1A2B3C4D00050004 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1A2B3C4D00050001;
+			remoteInfo = SmoothFrame;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin XCBuildConfiguration section */
+		1A2B3C4D00080001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("DEBUG=1", "$(inherited)",);
+				INFOPLIST_FILE = SmoothFrame/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hieupeek.SmoothFrame;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		1A2B3C4D00080002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				INFOPLIST_FILE = SmoothFrame/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hieupeek.SmoothFrame;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		1A2B3C4D00080003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hieupeek.SmoothFrame.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SmoothFrame.app/Contents/MacOS/SmoothFrame";
+			};
+			name = Debug;
+		};
+		1A2B3C4D00080004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hieupeek.SmoothFrame.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SmoothFrame.app/Contents/MacOS/SmoothFrame";
+			};
+			name = Release;
+		};
+		1A2B3C4D00080005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		1A2B3C4D00080006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1A2B3C4D00070001 /* Build configuration list for PBXNativeTarget "SmoothFrame" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A2B3C4D00080001 /* Debug */,
+				1A2B3C4D00080002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1A2B3C4D00070002 /* Build configuration list for PBXNativeTarget "SmoothFrameTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A2B3C4D00080003 /* Debug */,
+				1A2B3C4D00080004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1A2B3C4D00070003 /* Build configuration list for PBXProject "SmoothFrame" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A2B3C4D00080005 /* Debug */,
+				1A2B3C4D00080006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 1A2B3C4D00050004 /* Project object */;
+}
