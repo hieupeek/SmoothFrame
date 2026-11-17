@@ -13,7 +13,14 @@ import Foundation
 /// CVDisplayLink timing must be verified on a Mac.
 final class PlaybackEngine: NSObject {
     let player = AVPlayer()
-    private var videoOutput: AVPlayerItemVideoOutput?
+    /// Written once per opened file, on the main actor in `setupPlayer`,
+    /// before playback starts; read from the display-link thread in
+    /// `pullLatestFrame`. `AVPlayerItemVideoOutput` is not Sendable, and
+    /// Swift 6 rejects a mutable stored property of a non-Sendable type in
+    /// this `NSObject` (Sendable-conforming) class — `nonisolated(unsafe)`
+    /// records the write-before-use threading contract instead of changing
+    /// behaviour.
+    nonisolated(unsafe) private var videoOutput: AVPlayerItemVideoOutput?
     private let outputQueue = DispatchQueue(label: "com.hieupeek.SmoothFrame.videoOutput")
     private(set) var ringBuffer = FrameRingBuffer()
     private(set) var videoInfo: VideoInfo?
