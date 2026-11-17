@@ -39,7 +39,10 @@ enum DisplayDetector {
             result = result.enumerated().map { index, info in
                 var copy = info
                 if index < CGDisplayCountMaxFallback() {
-                    copy.refreshRateHz = Double(CGDisplayModeGetRefreshRate(currentMode(ofDisplayAt: index)))
+                    // `CGDisplayModeGetRefreshRate` is obsolete since Swift 3;
+                    // use the `CGDisplayMode.refreshRate` property instead.
+                    // 0 means "unknown", matching DisplayInfo.refreshRateHz.
+                    copy.refreshRateHz = currentMode(ofDisplayAt: index)?.refreshRate ?? 0
                 }
                 return copy
             }
