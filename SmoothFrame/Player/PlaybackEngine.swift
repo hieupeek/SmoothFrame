@@ -71,8 +71,13 @@ final class PlaybackEngine: NSObject {
 
     private static func codecGuess(for track: AVAssetTrack) -> String {
         // Best effort from format descriptions; "unknown" is honest when unreadable.
-        guard let desc = track.formatDescriptions.first,
-              let ext = CMFormatDescriptionGetExtension(desc, extensionKey: kCMFormatDescriptionExtension_FormatName) as? String else {
+        guard let first = track.formatDescriptions.first else { return "unknown" }
+        // `formatDescriptions` is `[Any]`; its elements are always
+        // `CMFormatDescription`. Swift 6 rejects `as?` to a CoreFoundation type
+        // ("will always succeed", CI run 10), so the compiler's own fix-it is
+        // `as!` — applied here after the nil check (CI run 11).
+        let desc = first as! CMFormatDescription
+        guard let ext = CMFormatDescriptionGetExtension(desc, extensionKey: kCMFormatDescriptionExtension_FormatName) as? String else {
             return "unknown"
         }
         return ext
