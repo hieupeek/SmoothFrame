@@ -22,17 +22,24 @@ final class PlaybackEngine: NSObject {
     /// behaviour.
     nonisolated(unsafe) private var videoOutput: AVPlayerItemVideoOutput?
     private let outputQueue = DispatchQueue(label: "com.hieupeek.SmoothFrame.videoOutput")
-    private(set) var ringBuffer = FrameRingBuffer()
-    private(set) var videoInfo: VideoInfo?
-    private(set) var sourceFPS: Double = 0
+    /// Same `nonisolated(unsafe)` contract as `videoOutput` above: this class
+    /// is shared by design between the main actor (open/seek), the
+    /// display-link thread (pullLatestFrame, render reads) and the video-output
+    /// queue (flush callbacks). Swift 6 rejects every mutable stored property
+    /// of this Sendable-conforming class, so each one opts out the same way
+    /// instead of failing one CI run at a time. This silences the compiler;
+    /// real thread safety still needs verification on a Mac.
+    nonisolated(unsafe) private(set) var ringBuffer = FrameRingBuffer()
+    nonisolated(unsafe) private(set) var videoInfo: VideoInfo?
+    nonisolated(unsafe) private(set) var sourceFPS: Double = 0
 
     /// Phase accumulator for non-integer target/source ratios.
-    private var phase: Double = 0
+    nonisolated(unsafe) private var phase: Double = 0
     /// Number of consecutive frames whose measured time exceeded the budget.
-    private(set) var overBudgetFrames: Int = 0
+    nonisolated(unsafe) private(set) var overBudgetFrames: Int = 0
 
-    var onNewFrame: (() -> Void)?
-    var onError: ((Error) -> Void)?
+    nonisolated(unsafe) var onNewFrame: (() -> Void)?
+    nonisolated(unsafe) var onError: ((Error) -> Void)?
 
     /// Open a video file. Calls completion on the main actor with VideoInfo or an error.
     func open(url: URL, completion: @escaping (Result<VideoInfo, Error>) -> Void) {
