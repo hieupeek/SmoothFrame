@@ -9,11 +9,12 @@ import Foundation
 /// bound). Export runs on a background queue and is cancellable.
 ///
 /// UNTESTED on real hardware.
-/// - Note: `@unchecked Sendable` — the only mutable state is the `cancelled`
-///   flag, set on the main actor (`cancel()` / `export()`) and read from the
-///   single detached export task. Swift 6 cannot verify that, so the class
-///   opts out the same way `PlaybackEngine` does with `nonisolated(unsafe)`.
-///   Real thread safety still needs verification on a Mac.
+/// - Note: `@unchecked Sendable` — the mutable state is the `cancelled` flag
+///   plus the two callback properties below, set on the main actor
+///   (`cancel()` / `export()`) and read from the single detached export task.
+///   Swift 6 cannot verify that, so the class opts out the same way
+///   `PlaybackEngine` does with `nonisolated(unsafe)`. Real thread safety
+///   still needs verification on a Mac.
 final class OfflineExporter: @unchecked Sendable {
     struct Options {
         var targetFPS: Int = 60
@@ -38,18 +39,23 @@ final class OfflineExporter: @unchecked Sendable {
     private var cancelled = false
     func cancel() { cancelled = true }
 
+    /// Callbacks for the in-flight export, stored as `nonisolated(unsafe)` —
+    /// the same pattern as `PlaybackEngine`'s properties (which CI runs 6–7
+    /// proved the compiler accepts): the exporter is created fresh per
+    /// export (`ContentView.startExport`), so one export owns one instance.
+    /// Written on the calling thread before the detached task starts; read
+    /// only from that task (completion via `MainActor.run`).
+    nonisolated(unsafe) private var progressHandler: ((Double) -> Void)?
+    nonisolated(unsafe) private var completionHandler: ((Result<URL, Error>) -> Void)?
+
     /// Export `sourceURL` to `destinationURL`. Progress 0...1 via callback.
     /// Calls completion on the main actor.
     func export(sourceURL: URL, destinationURL: URL, options: Options,
                 progress: @escaping (Double) -> Void,
                 completion: @escaping (Result<URL, Error>) -> Void) {
         cancelled = false
-        // `progress` / `completion` are plain escaping closures (not Sendable),
-        // but they are only invoked from this one detached task, on the main
-        // actor via `MainActor.run`. `nonisolated(unsafe)` records that
-        // contract instead of changing behaviour.
-        nonisolated(unsafe) let safeProgress = progress
-        nonisolated(unsafe) let safeCompletion = completion
+        progressHandler = progress
+        completionHandler = completion
         Task.detached(priority: .userInitiated) { [self] in
             do {
                 let asset = AVAsset(url: sourceURL)
@@ -114,7 +120,7 @@ final class OfflineExporter: @unchecked Sendable {
                                                  width: outWidth, height: outHeight)
                                 presentationTime = CMTimeAdd(presentationTime, frameDuration)
                                 frameIndex += 1
-                                safeProgress(Double(frameIndex) / Double(max(totalFrames, 1)))
+                                progressHandler?(Double(frameIndex) / Double(max(totalFrames, 1)))
                             }
                         }
                     }
@@ -122,7 +128,7 @@ final class OfflineExporter: @unchecked Sendable {
                                 upscaler: upscaler, width: outWidth, height: outHeight)
                     presentationTime = CMTimeAdd(presentationTime, frameDuration)
                     frameIndex += 1
-                    safeProgress(Double(frameIndex) / Double(max(totalFrames, 1)))
+                    progressHandler?(Double(frameIndex) / Double(max(totalFrames, 1)))
                     prev = curr
                     if cancelled { break }
                 }
@@ -131,21 +137,21 @@ final class OfflineExporter: @unchecked Sendable {
                 if cancelled {
                     try? FileManager.default.removeItem(at: destinationURL)
                     await MainActor.run {
-                        safeCompletion(.failure(NSError(domain: "SmoothFrame", code: 3,
+                        completionHandler?(.failure(NSError(domain: "SmoothFrame", code: 3,
                                                     userInfo: [NSLocalizedDescriptionKey: "Export cancelled."])))
                     }
                     return
                 }
                 await writer.finishWriting()
                 if writer.status == .completed {
-                    await MainActor.run { safeCompletion(.success(destinationURL)) }
+                    await MainActor.run { completionHandler?(.success(destinationURL)) }
                 } else {
                     let err = writer.error ?? NSError(domain: "SmoothFrame", code: 4,
                                                       userInfo: [NSLocalizedDescriptionKey: "Export failed."])
-                    await MainActor.run { safeCompletion(.failure(err)) }
+                    await MainActor.run { completionHandler?(.failure(err)) }
                 }
             } catch {
-                await MainActor.run { safeCompletion(.failure(error)) }
+                await MainActor.run { completionHandler?(.failure(error)) }
             }
         }
     }
