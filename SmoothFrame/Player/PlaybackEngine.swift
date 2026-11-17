@@ -71,13 +71,17 @@ final class PlaybackEngine: NSObject {
 
     private static func codecGuess(for track: AVAssetTrack) -> String {
         // Best effort from format descriptions; "unknown" is honest when unreadable.
-        guard let desc = track.formatDescriptions.first as? CMFormatDescription,
+        guard let desc = track.formatDescriptions.first,
               let ext = CMFormatDescriptionGetExtension(desc, extensionKey: kCMFormatDescriptionExtension_FormatName) as? String else {
             return "unknown"
         }
         return ext
     }
 
+    /// Called from `open()` on the main actor. Marked `@MainActor` because
+    /// `AVPlayerItem(asset:)` and `AVPlayerItem.add(_:)` are main-actor
+    /// isolated in the macOS 15.5 SDK (CI run 10).
+    @MainActor
     private func setupPlayer(with asset: AVAsset) {
         let attrs: [String: Any] = [
             kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA,

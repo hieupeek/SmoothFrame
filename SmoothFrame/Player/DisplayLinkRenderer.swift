@@ -29,6 +29,11 @@ final class DisplayLinkRenderer: NSObject, MTKViewDelegate {
     private var lastPresentedBuffer: CVPixelBuffer?
     private var lastFrameTime: CFAbsoluteTime = 0
 
+    /// Called from `MetalVideoView.makeNSView` on the main actor. Marked
+    /// `@MainActor` because MTKView's properties (`device`, `delegate`,
+    /// `framebufferOnly`, `enableSetNeedsDisplay`, `isPaused`) are
+    /// main-actor isolated in the macOS 15.5 SDK (CI run 10).
+    @MainActor
     func attach(to view: MTKView) {
         metalDevice = MTLCreateSystemDefaultDevice()
         view.device = metalDevice
