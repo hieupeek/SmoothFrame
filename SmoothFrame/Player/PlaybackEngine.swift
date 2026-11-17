@@ -41,10 +41,24 @@ final class PlaybackEngine: NSObject {
     nonisolated(unsafe) var onNewFrame: (() -> Void)?
     nonisolated(unsafe) var onError: ((Error) -> Void)?
 
+    /// In-flight `open()` state. `open()`'s `Task` and its `MainActor.run`
+    /// closures are `@Sendable`, so they cannot capture the non-Sendable
+    /// `AVAsset` or the plain escaping `completion` directly — the same
+    /// reason `OfflineExporter` stores its callbacks as properties (CI run 10
+    /// proved the compiler accepts stored `nonisolated(unsafe)` properties
+    /// where locals do not work, CI run 9). Written on the calling thread
+    /// before the task starts; read only from that task. `open()` is driven
+    /// from the UI file picker, so two opens never run concurrently in
+    /// practice. Real thread safety still needs verification on a Mac.
+    nonisolated(unsafe) private var openAsset: AVAsset?
+    nonisolated(unsafe) private var openCompletion: ((Result<VideoInfo, Error>) -> Void)?
+
     /// Open a video file. Calls completion on the main actor with VideoInfo or an error.
     func open(url: URL, completion: @escaping (Result<VideoInfo, Error>) -> Void) {
-        let asset = AVAsset(url: url)
+        openAsset = AVAsset(url: url)
+        openCompletion = completion
         Task {
+            guard let asset = self.openAsset else { return }
             do {
                 let tracks = try await asset.loadTracks(withMediaType: .video)
                 guard let track = tracks.first else {
@@ -60,11 +74,13 @@ final class PlaybackEngine: NSObject {
                 await MainActor.run {
                     self.videoInfo = info
                     self.sourceFPS = Double(fps)
-                    self.setupPlayer(with: asset)
-                    completion(.success(info))
+                    if let asset = self.openAsset {
+                        self.setupPlayer(with: asset)
+                    }
+                    self.openCompletion?(.success(info))
                 }
             } catch {
-                await MainActor.run { completion(.failure(error)) }
+                await MainActor.run { self.openCompletion?(.failure(error)) }
             }
         }
     }

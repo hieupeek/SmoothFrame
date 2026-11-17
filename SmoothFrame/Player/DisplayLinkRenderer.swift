@@ -13,7 +13,13 @@ import SwiftUI
 ///   4. Render the MTLTexture aspect-fit.
 /// Audio sync: the display time is mapped to item time via the player; if the
 /// needed source frame hasn't arrived, hold the previous frame and count a drop.
-final class DisplayLinkRenderer: NSObject, MTKViewDelegate {
+/// - Note: `@unchecked Sendable` — the renderer is shared by design between
+///   the main actor (`attach`, SwiftUI) and the display-link thread
+///   (`renderTick`, `draw`), and its `Task { @MainActor ... }` stats hop
+///   captures `self` (CI run 12: `sending 'self'`). Swift 6 cannot verify
+///   that sharing, so the class opts out the same way `OfflineExporter`
+///   does. Real thread safety still needs verification on a Mac.
+final class DisplayLinkRenderer: NSObject, MTKViewDelegate, @unchecked Sendable {
     var playbackEngine: PlaybackEngine?
     var settings: AppSettings = AppSettings()
     var stats: PlaybackStats?
@@ -121,6 +127,12 @@ final class DisplayLinkRenderer: NSObject, MTKViewDelegate {
         lastPresentedBuffer = toPresent
         let elapsedMs = (CFAbsoluteTimeGetCurrent() - tickStart) * 1000
 
+        // `toPresent` is a mutable local holding a `CVPixelBuffer` (not
+        // Sendable), so it cannot be captured by the `@Sendable` stats task
+        // below (CI run 12: `sending 'toPresent'`); read its size here.
+        let presentedWidth = CVPixelBufferGetWidth(toPresent)
+        let presentedHeight = CVPixelBufferGetHeight(toPresent)
+
         // Stats + auto-degrade (hop to MainActor).
         let fps = Double(settings.targetFPS)
         Task { @MainActor [weak self] in
@@ -129,8 +141,8 @@ final class DisplayLinkRenderer: NSObject, MTKViewDelegate {
             stats.sourceFPS = engine.sourceFPS
             stats.frameTimeMs = elapsedMs
             stats.upscaleTimeMs = upscaleMs
-            stats.outputWidth = CVPixelBufferGetWidth(toPresent)
-            stats.outputHeight = CVPixelBufferGetHeight(toPresent)
+            stats.outputWidth = presentedWidth
+            stats.outputHeight = presentedHeight
             stats.engineName = self.currentEngine?.name ?? "—"
             if interpolated { stats.interpolatedFrames += 1 }
             if let degraded = engine.noteFrameTime(elapsedMs, targetFPS: self.settings.targetFPS) {
