@@ -9,7 +9,12 @@ import Foundation
 /// bound). Export runs on a background queue and is cancellable.
 ///
 /// UNTESTED on real hardware.
-final class OfflineExporter {
+/// - Note: `@unchecked Sendable` — the only mutable state is the `cancelled`
+///   flag, set on the main actor (`cancel()` / `export()`) and read from the
+///   single detached export task. Swift 6 cannot verify that, so the class
+///   opts out the same way `PlaybackEngine` does with `nonisolated(unsafe)`.
+///   Real thread safety still needs verification on a Mac.
+final class OfflineExporter: @unchecked Sendable {
     struct Options {
         var targetFPS: Int = 60
         var outputResolution: OutputResolution = .native
@@ -39,6 +44,12 @@ final class OfflineExporter {
                 progress: @escaping (Double) -> Void,
                 completion: @escaping (Result<URL, Error>) -> Void) {
         cancelled = false
+        // `progress` / `completion` are plain escaping closures (not Sendable),
+        // but they are only invoked from this one detached task, on the main
+        // actor via `MainActor.run`. `nonisolated(unsafe)` records that
+        // contract instead of changing behaviour.
+        nonisolated(unsafe) let safeProgress = progress
+        nonisolated(unsafe) let safeCompletion = completion
         Task.detached(priority: .userInitiated) { [self] in
             do {
                 let asset = AVAsset(url: sourceURL)
@@ -103,7 +114,7 @@ final class OfflineExporter {
                                                  width: outWidth, height: outHeight)
                                 presentationTime = CMTimeAdd(presentationTime, frameDuration)
                                 frameIndex += 1
-                                progress(Double(frameIndex) / Double(max(totalFrames, 1)))
+                                safeProgress(Double(frameIndex) / Double(max(totalFrames, 1)))
                             }
                         }
                     }
@@ -111,7 +122,7 @@ final class OfflineExporter {
                                 upscaler: upscaler, width: outWidth, height: outHeight)
                     presentationTime = CMTimeAdd(presentationTime, frameDuration)
                     frameIndex += 1
-                    progress(Double(frameIndex) / Double(max(totalFrames, 1)))
+                    safeProgress(Double(frameIndex) / Double(max(totalFrames, 1)))
                     prev = curr
                     if cancelled { break }
                 }
@@ -120,21 +131,21 @@ final class OfflineExporter {
                 if cancelled {
                     try? FileManager.default.removeItem(at: destinationURL)
                     await MainActor.run {
-                        completion(.failure(NSError(domain: "SmoothFrame", code: 3,
+                        safeCompletion(.failure(NSError(domain: "SmoothFrame", code: 3,
                                                     userInfo: [NSLocalizedDescriptionKey: "Export cancelled."])))
                     }
                     return
                 }
                 await writer.finishWriting()
                 if writer.status == .completed {
-                    await MainActor.run { completion(.success(destinationURL)) }
+                    await MainActor.run { safeCompletion(.success(destinationURL)) }
                 } else {
                     let err = writer.error ?? NSError(domain: "SmoothFrame", code: 4,
                                                       userInfo: [NSLocalizedDescriptionKey: "Export failed."])
-                    await MainActor.run { completion(.failure(err)) }
+                    await MainActor.run { safeCompletion(.failure(err)) }
                 }
             } catch {
-                await MainActor.run { completion(.failure(error)) }
+                await MainActor.run { safeCompletion(.failure(error)) }
             }
         }
     }
